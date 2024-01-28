@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <hr class="my-4">
+
+    <h1 style="text-align: center;">A simple system for managing a book library</h1>
+    <hr class="my-4">
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Add Customer</h2>
+                <form id="addCustomerForm" class="card" style="width: 18rem;">
+                    <label for="customerName">Name:</label>
+                    <input type="text" id="customerName" name="name" required>
+
+                    <label for="customerCity">City:</label>
+                    <input type="text" id="customerCity" name="city" required>
+
+                    <label for="customerAge">Age:</label>
+                    <input type="number" id="customerAge" name="age" required>
+
+                    <button type="button" onclick="addCustomer()">Add Customer</button>
+                </form>
+            </div>
+
+            <!-- Add Book Form -->
+            <div class="col">
+                <h2>Add Book</h2>
+                <form id="addBookForm" class="card" style="width: 18rem;">
+                    <label for="bookName">Name:</label>
+                    <input type="text" id="bookName" name="name" required>
+
+                    <label for="bookAuthor">Author:</label>
+                    <input type="text" id="bookAuthor" name="author" required>
+
+                    <label for="bookYear">Year Published:</label>
+                    <input type="number" id="bookYear" name="year_published" required>
+
+                    <label for="bookType">Type (1/2/3):</label>
+                    <input type="number" id="bookType" name="book_type" required>
+
+                    <button type="button" onclick="addBook()">Add Book</button>
+                </form>
+            </div>
+
+            <div class="col">
+                <h2>Loan Book</h2>
+                <form id="loanBookForm" class="card" style="width: 18rem;">
+                    <label for="loanCustomerId">Customer ID:</label>
+                    <input type="number" id="loanCustomerId" name="cust_id" required>
+
+                    <label for="loanBookId">Book ID:</label>
+                    <input type="number" id="loanBookId" name="book_id" required>
+
+                    <button type="button" onclick="loanBook()">Loan Book</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <hr class="my-4">
+
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                <svg class="bi" width="30" height="24">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-muted">© Raul Asadov, 2024</span>
+        </div>
+    </footer>
+
+
+    <script>
+        async function addCustomer() {
+            const formData = new FormData(document.getElementById('addCustomerForm'));
+            const response = await fetch('/add_customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData)),
+            });
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        async function addBook() {
+            const formData = new FormData(document.getElementById('addBookForm'));
+            const response = await fetch('/add_book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData)),
+            });
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        async function loanBook() {
+            const formData = new FormData(document.getElementById('loanBookForm'));
+            const response = await fetch('/loan_book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData)),
+            });
+            const result = await response.json();
+            alert(result.message);
+        }
+    </script>
+
+</body>
+
+</html>

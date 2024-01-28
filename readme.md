@@ -106,3 +106,39 @@ Build a client application to interact with the DAL. Implement the following ope
 10. Find customer by name
 11. Remove book
 12. Remove customer
+
+
+
+
+## Testing Endpoints in Your Application
+
+### Add Customer:
+
+- **Request Type:** POST
+- **Request URL:** [http://127.0.0.1:5000/add_customer](http://127.0.0.1:5000/add_customer)
+- **Body:**
+  - Choose raw
+  - Select JSON (application/json)
+  - Enter JSON data for adding a customer (e.g., `{"name": "John Doe", "city": "New York", "age": 30}`).
+- Click the "Send" button.
+
+### Add Book:
+
+- **Request Type:** POST
+- **Request URL:** [http://127.0.0.1:5000/add_book](http://127.0.0.1:5000/add_book)
+- **Body:**
+  - Choose raw
+  - Select JSON (application/json)
+  - Enter JSON data for adding a book (e.g., `{"name": "The Great Gatsby", "author": "F. Scott Fitzgerald", "year_published": 1925, "book_type": 1}`).
+- Click the "Send" button.
+
+### Loan Book:
+
+- **Request Type:** POST
+- **Request URL:** [http://127.0.0.1:5000/loan_book](http://127.0.0.1:5000/loan_book)
+- **Body:**
+  - Choose raw
+  - Select JSON (application/json)
+  - Enter JSON data for loaning a book (e.g., `{"cust_id": 1, "book_id": 1}`).
+- Click the "Send" button.
+

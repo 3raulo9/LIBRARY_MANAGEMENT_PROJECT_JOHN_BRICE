@@ -1,81 +1,82 @@
-from flask import Flask, request, redirect
-from pages.home_page import app as home_app
-from dotenv import load_dotenv
-import mysql.connector
-
-import json
-import os
+import datetime
+from flask import Flask, jsonify, request, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-# Mock user database for demonstration purposes
-users = [{'username': 'admin', 'password': 'admin123'}]
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    author = db.Column(db.String(100), nullable=False)
+    year_published = db.Column(db.Integer, nullable=False)
+    book_type = db.Column(db.Integer, nullable=False)
 
-app = home_app 
+class Customer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    city = db.Column(db.String(100), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
 
-load_dotenv()
+class Loan(db.Model):
+    cust_id = db.Column(db.Integer, db.ForeignKey('customer.id'), primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), primary_key=True)
+    loan_date = db.Column(db.Date, nullable=False)
+    return_date = db.Column(db.Date)
 
-db_of_users = mysql.connector.connect(
-    host=os.getenv("DB_HOST"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    database="users_db",
-)
-cursor = db_of_users.cursor()
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.init_app(app)
+    return app
 
+def create_tables():
+    with app.app_context():
+        db.create_all()
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 
+@app.route('/add_customer', methods=['POST'])
+def add_customer():
+    data = request.json
+    new_customer = Customer(name=data['name'], city=data['city'], age=data['age'])
+    db.session.add(new_customer)
+    db.session.commit()
+    return jsonify({'message': 'Customer added successfully'}), 201
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        # Check if the username is not already taken
-        if any(user['username'] == username for user in users):
-            return 'Username already taken. Please choose another username.'
-        
-        # Add the new user to the database (in-memory for simplicity)
-        users.append({'username': username, 'password': password})
-        
-        return 'Registration successful! You can now <a href="/login">login</a>.'
-    
-    # Display the registration form
-    return '''
-        <form method="post" action="/register">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
-            <input type="submit" value="Register">
-        </form>
-    '''
+@app.route('/add_book', methods=['POST'])
+def add_book():
+    data = request.json
+    new_book = Book(name=data['name'], author=data['author'], year_published=data['year_published'], book_type=data['book_type'])
+    db.session.add(new_book)
+    db.session.commit()
+    return jsonify({'message': 'Book added successfully'}), 201
 
+@app.route('/loan_book', methods=['POST'])
+def loan_book():
+    data = request.json
+    cust_id = data['cust_id']
+    book_id = data['book_id']
+    book_type = Book.query.get(book_id).book_type
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        # Check if the provided credentials are valid
-        if any(user['username'] == username and user['password'] == password for user in users):
-            return f'Hello, {username}! You are now logged in.'
-        else:
-            return 'Invalid username or password. Please try again.'
-    
-    # Display the login form
-    return '''
-        <form method="post" action="/login">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
-            <input type="submit" value="Login">
-        </form>
-    '''
+    loan_duration = {
+        1: 10,
+        2: 5,
+        3: 2
+    }
 
+    return_date = datetime.datetime.now() + datetime.timedelta(days=loan_duration.get(book_type, 0))
+    new_loan = Loan(cust_id=cust_id, book_id=book_id, loan_date=datetime.datetime.now(), return_date=return_date)
+    db.session.add(new_loan)
+    db.session.commit()
+    return jsonify({'message': 'Book loaned successfully'}), 201
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    create_app()
+    create_tables()
+    app.run(debug=True, port=5000)
