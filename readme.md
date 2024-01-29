@@ -110,7 +110,7 @@ Build a client application to interact with the DAL. Implement the following ope
 
 
 
-## Testing Endpoints in Your Application
+## Testing Endpoints in Your Application (works with postman)
 
 ### Add Customer:
 
