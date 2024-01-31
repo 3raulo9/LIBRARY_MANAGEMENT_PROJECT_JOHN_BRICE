@@ -76,6 +76,87 @@ def loan_book():
     db.session.commit()
     return jsonify({'message': 'Book loaned successfully'}), 201
 
+@app.route('/return_book', methods=['POST'])
+def return_book():
+    data = request.json
+    cust_id = data['cust_id']
+    book_id = data['book_id']
+
+    loan = Loan.query.filter_by(cust_id=cust_id, book_id=book_id).first()
+    if loan:
+        loan.return_date = datetime.datetime.now()
+        db.session.commit()
+        return jsonify({'message': 'Book returned successfully'}), 201
+    else:
+        return jsonify({'message': 'Loan not found'}), 404
+
+
+@app.route('/display_books', methods=['GET'])
+def display_books():
+    books = Book.query.all()
+    book_list = [{'name': book.name, 'author': book.author, 'year_published': book.year_published, 'book_type': book.book_type} for book in books]
+    return jsonify({'books': book_list})
+
+@app.route('/display_customers', methods=['GET'])
+def display_customers():
+    customers = Customer.query.all()
+    customer_list = [{'name': customer.name, 'city': customer.city, 'age': customer.age} for customer in customers]
+    return jsonify({'customers': customer_list})
+
+@app.route('/display_loans', methods=['GET'])
+def display_loans():
+    loans = Loan.query.all()
+    loan_list = [{'cust_id': loan.cust_id, 'book_id': loan.book_id, 'loan_date': loan.loan_date, 'return_date': loan.return_date} for loan in loans]
+    return jsonify({'loans': loan_list})
+
+@app.route('/display_late_loans', methods=['GET'])
+def display_late_loans():
+    current_date = datetime.datetime.now().date()
+    late_loans = Loan.query.filter(Loan.return_date < current_date).all()
+    late_loan_list = [{'cust_id': loan.cust_id, 'book_id': loan.book_id, 'loan_date': loan.loan_date, 'return_date': loan.return_date} for loan in late_loans]
+    return jsonify({'late_loans': late_loan_list})
+
+
+@app.route('/find_book', methods=['GET'])
+def find_book():
+    book_name = request.args.get('name')
+    book = Book.query.filter_by(name=book_name).first()
+    if book:
+        return jsonify({'book': {'name': book.name, 'author': book.author, 'year_published': book.year_published, 'book_type': book.book_type}})
+    else:
+        return jsonify({'message': 'Book not found'}), 404
+
+@app.route('/find_customer', methods=['GET'])
+def find_customer():
+    customer_name = request.args.get('name')
+    customer = Customer.query.filter_by(name=customer_name).first()
+    if customer:
+        return jsonify({'customer': {'name': customer.name, 'city': customer.city, 'age': customer.age, }})
+    else:
+        return jsonify({'message': 'Customer not found'}), 404
+
+
+@app.route('/remove_book/<int:book_id>', methods=['DELETE'])
+def remove_book(book_id):
+    book = Book.query.get(book_id)
+    if book:
+        db.session.delete(book)
+        db.session.commit()
+        return jsonify({'message': 'Book removed successfully'}), 200
+    else:
+        return jsonify({'message': 'Book not found'}), 404
+
+
+@app.route('/remove_customer/<int:cust_id>', methods=['DELETE'])
+def remove_customer(cust_id):
+    customer = Customer.query.get(cust_id)
+    if customer:
+        db.session.delete(customer)
+        db.session.commit()
+        return jsonify({'message': 'Customer removed successfully'}), 200
+    else:
+        return jsonify({'message': 'Customer not found'}), 404
+
 if __name__ == '__main__':
     create_app()
     create_tables()

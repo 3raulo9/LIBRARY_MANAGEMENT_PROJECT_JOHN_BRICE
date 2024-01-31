@@ -57,12 +57,12 @@ After activating your virtual environment, you can install the required packages
    ```
 
 This command will install all the packages listed in the `requirements.txt` file.
-```
+
 Please replace `/path/to/your/project` with the actual path to your project directory. Make sure your `requirements.txt` file is in the project directory.
 
 
 
-### Project Description
+## Project Description
 mySQL tables:
 1. Books
    - Id (PK)
@@ -110,35 +110,92 @@ Build a client application to interact with the DAL. Implement the following ope
 
 
 
-## Testing Endpoints in Your Application
+# Testing Endpoints in Your Application
 
-### Add Customer:
+## Add a new customer:
 
-- **Request Type:** POST
-- **Request URL:** [http://127.0.0.1:5000/add_customer](http://127.0.0.1:5000/add_customer)
-- **Body:**
-  - Choose raw
-  - Select JSON (application/json)
-  - Enter JSON data for adding a customer (e.g., `{"name": "John Doe", "city": "New York", "age": 30}`).
-- Click the "Send" button.
+- **Endpoint:** POST http://localhost:5000/add_customer
+- **Body (raw JSON):**
+    ```json
+    {
+        "name": "John Doe",
+        "city": "New York",
+        "age": 25
+    }
+    ```
+  
+## Add a new book:
 
-### Add Book:
+- **Endpoint:** POST http://localhost:5000/add_book
+- **Body (raw JSON):**
+    ```json
+    {
+        "name": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "year_published": 1925,
+        "book_type": 1
+    }
+    ```
 
-- **Request Type:** POST
-- **Request URL:** [http://127.0.0.1:5000/add_book](http://127.0.0.1:5000/add_book)
-- **Body:**
-  - Choose raw
-  - Select JSON (application/json)
-  - Enter JSON data for adding a book (e.g., `{"name": "The Great Gatsby", "author": "F. Scott Fitzgerald", "year_published": 1925, "book_type": 1}`).
-- Click the "Send" button.
+## Loan a book:
 
-### Loan Book:
+- **Endpoint:** POST http://localhost:5000/loan_book
+- **Body (raw JSON):**
+    ```json
+    {
+        "cust_id": 1,
+        "book_id": 1
+    }
+    ```
 
-- **Request Type:** POST
-- **Request URL:** [http://127.0.0.1:5000/loan_book](http://127.0.0.1:5000/loan_book)
-- **Body:**
-  - Choose raw
-  - Select JSON (application/json)
-  - Enter JSON data for loaning a book (e.g., `{"cust_id": 1, "book_id": 1}`).
-- Click the "Send" button.
+## Return a book:
 
+- **Endpoint:** POST http://localhost:5000/return_book
+- **Body (raw JSON):**
+    ```json
+    {
+        "cust_id": 1,
+        "book_id": 1
+    }
+    ```
+
+## Display all books:
+
+- **Endpoint:** GET http://localhost:5000/display_books
+-WORKS!
+
+## Display all customers:
+
+- **Endpoint:** GET http://localhost:5000/display_customers
+-WORKS!
+
+## Display all loans:
+
+- **Endpoint:** GET http://localhost:5000/display_loans
+-WORKS
+
+## Display late loans:
+
+- **Endpoint:** GET http://localhost:5000/display_late_loans
+-WORKS!
+
+## Find book by name:
+
+- **Endpoint:** GET http://localhost:5000/find_book?name=The%20Great%20Gatsby
+-WORKS!
+
+## Find customer by name:
+
+- **Endpoint:** GET http://localhost:5000/find_customer?name=John%20Doe
+-WORKS!
+
+## Remove book:
+
+- **Endpoint:** DELETE http://localhost:5000/remove_book/1
+-WORKS!
+## Remove customer: 
+
+- **Endpoint:** DELETE http://localhost:5000/remove_customer/1
+-WORKS!
+
+Make sure your Flask server is running while testing these requests in Postman. Adjust the URLs and parameters based on your actual setup.
