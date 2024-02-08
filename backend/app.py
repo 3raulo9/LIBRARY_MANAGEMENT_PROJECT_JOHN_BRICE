@@ -37,9 +37,6 @@ def create_tables():
     with app.app_context():
         db.create_all()
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/add_customer', methods=['POST'])
 def add_customer():
