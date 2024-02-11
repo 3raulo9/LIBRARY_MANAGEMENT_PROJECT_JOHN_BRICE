@@ -60,7 +60,25 @@ After activating your virtual environment, you can install the required packages
 This command will install all the packages listed in the `requirements.txt` file.
 
 Please replace `/path/to/your/project` with the actual path to your project directory. Make sure your `requirements.txt` file is in the project directory.
+## Running the Application
+### Turn on the Backend:
 
+1. Navigate to the backend directory:
+
+   ```bash
+   cd backend
+Run the backend application:
+ - py app.py
+### Open the Frontend:
+Once the backend is running, follow these steps to open the frontend:
+
+Locate the HTML file named "index.html" in the project.
+
+It is recommended to use Visual Studio Code with the "Live Server" extension. If you don't have it, you can install it from the Visual Studio Code Marketplace.
+
+Right-click on the "index.html" file and select "Open with Live Server."
+
+This will open your frontend in your preferred browser. Ensure that you run the frontend on a port other than "5000" to avoid conflicts with the backend. Using a different port is a recommended best practice.
 
 
 ## Project Description
@@ -165,40 +183,38 @@ Build a client application to interact with the DAL. Implement the following ope
 ## Display all books:
 
 - **Endpoint:** GET http://localhost:5000/display_books
--WORKS!
+
 
 ## Display all customers:
 
 - **Endpoint:** GET http://localhost:5000/display_customers
--WORKS!
+
 
 ## Display all loans:
 
 - **Endpoint:** GET http://localhost:5000/display_loans
--WORKS
 
 ## Display late loans:
 
 - **Endpoint:** GET http://localhost:5000/display_late_loans
--WORKS!
+
 
 ## Find book by name:
 
 - **Endpoint:** GET http://localhost:5000/find_book?name=The%20Great%20Gatsby
--WORKS!
 
 ## Find customer by name:
 
 - **Endpoint:** GET http://localhost:5000/find_customer?name=John%20Doe
--WORKS!
+
 
 ## Remove book:
 
 - **Endpoint:** DELETE http://localhost:5000/remove_book/1
--WORKS!
+
 ## Remove customer: 
 
 - **Endpoint:** DELETE http://localhost:5000/remove_customer/1
--WORKS!
+
 
 Make sure your Flask server is running while testing these requests in Postman. Adjust the URLs and parameters based on your actual setup.
