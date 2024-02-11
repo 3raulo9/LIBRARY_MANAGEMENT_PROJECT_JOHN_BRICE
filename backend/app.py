@@ -5,6 +5,9 @@ import jwt
 import datetime
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 import json
+import os
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -52,13 +55,13 @@ def create_tables():
     with app.app_context():
         db.create_all()
 
-SUPER_USER_PASSWORD = "PASSWORDPASSWORD" 
+super_user_password = os.getenv("SUPER_USER_PASSWORD")
 
 @app.route('/register', methods=['POST'])
 def register():
     try:
         data = request.json
-        if data.get('super_user_password') == SUPER_USER_PASSWORD:
+        if data.get('super_user_password') == super_user_password:
             is_super_user = True
         else:
             is_super_user = False

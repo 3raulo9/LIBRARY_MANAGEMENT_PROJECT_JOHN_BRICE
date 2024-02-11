@@ -58,6 +58,13 @@ After activating your virtual environment, you can install the required packages
    ```
 
 This command will install all the packages listed in the `requirements.txt` file.
+## THE CREATION OF THE SUPER USER
+
+1. Create a .env file in the backend folder and add the following line:
+
+   - SUPER_USER_PASSWORD=YOUR_PASSWORD_HERE
+
+call the password whatever your you so you can enter it and access the super user page
 
 Please replace `/path/to/your/project` with the actual path to your project directory. Make sure your `requirements.txt` file is in the project directory.
 ## Running the Application
