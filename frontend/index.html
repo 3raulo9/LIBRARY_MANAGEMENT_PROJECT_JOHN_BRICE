@@ -4,204 +4,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>User Registration/Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+    </style>
 </head>
 
 <body>
-    <hr class="my-4">
-    <h1 style="text-align: center;">A simple system for managing a book library</h1>
-    <hr class="my-4">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><button class="btn btn-primary" type="button"
-                            onclick="showAllBooks()">Show all books</button></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><button class="btn btn-success" type="button"
-                            onclick="showAllCustomers()">Show all customers</button></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><button class="btn btn-info" type="button"
-                            onclick="showAllLoans()">Show all loans</button></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><button class="btn btn-warning" type="button"
-                            onclick="showLateLoans()">Show late loans</button></a>
-                </li>
-            </ul>
-        </div>
-
-
-    </nav>
-    <hr class="my-4">
-
-
 
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Add Customer</h2>
-                        <form id="addCustomerForm">
-                            <label for="customerName">Name:</label>
-                            <input type="text" id="customerName" name="name" class="form-control" required>
-
-                            <label for="customerCity">City:</label>
-                            <input type="text" id="customerCity" name="city" class="form-control" required>
-
-                            <label for="customerAge">Age:</label>
-                            <input type="number" id="customerAge" name="age" class="form-control" required>
-
-                            <button type="button" onclick="addCustomer()" class="btn btn-primary mt-3">Add
-                                Customer</button>
-                        </form>
+            <div class="col-md-6">
+                <h2>User Registration</h2>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" class="form-control" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" class="form-control" id="age" name="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <!-- Updated Super User Password input -->
+                    <div class="form-group">
+                        <label for="superUserPassword">Super User Password:</label>
+                        <input type="text" class="form-control" id="superUserPassword" name="super_user_password"
+                            required>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="registerUser()">Register</button>
+                </form>
             </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Add Book</h2>
-                        <form id="addBookForm">
-                            <label for="bookName">Name:</label>
-                            <input type="text" id="bookName" name="name" class="form-control" required>
-
-                            <label for="bookAuthor">Author:</label>
-                            <input type="text" id="bookAuthor" name="author" class="form-control" required>
-
-                            <label for="bookYear">Year Published:</label>
-                            <input type="number" id="bookYear" name="year_published" class="form-control" required>
-
-                            <label for="bookType">Type (1/2/3):</label>
-                            <input type="number" id="bookType" name="book_type" class="form-control" required>
-
-                            <button type="button" onclick="addBook()" class="btn btn-primary mt-3">Add Book</button>
-                        </form>
+            <div class="col-md-6">
+                <h2>User Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">Username:</label>
+                        <input type="text" class="form-control" id="loginUsername" name="username" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" class="form-control" id="loginPassword" name="password" required>
+                    </div>
+            
+                    <button type="button" class="btn btn-primary" onclick="loginUser()">Login</button>
+                </form>
             </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Loan Book</h2>
-                        <form id="loanBookForm">
-                            <label for="loanCustomerId">Customer ID:</label>
-                            <input type="number" id="loanCustomerId" name="cust_id" class="form-control" required>
-
-                            <label for="loanBookId">Book ID:</label>
-                            <input type="number" id="loanBookId" name="book_id" class="form-control" required>
-
-                            <button type="button" onclick="loanBook()" class="btn btn-primary mt-3">Loan Book</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Return Book</h2>
-                        <form id="returnBookForm">
-                            <label for="returnCustomerId">Customer ID:</label>
-                            <input type="number" id="returnCustomerId" name="cust_id" class="form-control" required>
-
-                            <label for="returnBookId">Book ID:</label>
-                            <input type="number" id="returnBookId" name="book_id" class="form-control" required>
-
-                            <button type="button" onclick="returnBook()" class="btn btn-primary mt-3">Return
-                                Book</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <hr class="my-4">
-            <hr class="my-4">
-
-
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title">Find Book</h2>
-                            <label for="findBookName">Book Name:</label>
-                            <input type="text" id="findBookName" name="findBookName" class="form-control mb-2" required>
-                            <button type="button" onclick="findBook()" class="btn btn-primary">Find Book</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title">Find Customer</h2>
-                            <label for="findCustomerName">Customer Name:</label>
-                            <input type="text" id="findCustomerName" name="findCustomerName" class="form-control mb-2"
-                                required>
-                            <button type="button" onclick="findCustomer()" class="btn btn-primary">Find
-                                Customer</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title">Remove Book</h2>
-                            <label for="removeBookId">Book ID:</label>
-                            <input type="number" id="removeBookId" name="book_id" class="form-control mb-2" required>
-                            <button type="button" onclick="removeBook()" class="btn btn-danger">Remove Book</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title">Remove Customer</h2>
-                            <label for="removeCustomerId">Customer ID:</label>
-                            <input type="number" id="removeCustomerId" name="cust_id" class="form-control mb-2"
-                                required>
-                            <button type="button" onclick="removeCustomer()" class="btn btn-danger">Remove
-                                Customer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4">
-
         </div>
-
-
     </div>
-    <hr class="my-4">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                <svg class="bi" width="30" height="24">
-                    <use xlink:href="#bootstrap"></use>
-                </svg>
-            </a>
-            <span class="mb-3 mb-md-0 text-muted">© Raul Asadov, 2024</span>
-        </div>
-    </footer>
 
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Your custom script -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="static/js/script.js"></script>
+
+    <script>
+        async function registerUser() {
+            const formData = new FormData(document.getElementById('registrationForm'));
+
+            try {
+                const response = await axios.post('http://127.0.0.1:5000/register', Object.fromEntries(formData));
+                alert(response.data.message);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        async function loginUser() {
+        const formData = new FormData(document.getElementById('loginForm'));
+
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/login', Object.fromEntries(formData));
+            alert('Login successful');
+
+            // Save the JWT token in local storage or session storage for future authenticated requests
+            localStorage.setItem('jwtToken', response.data.access_token);
+
+            // Check the entire response for debugging
+            console.log('Backend Response:', response);
+
+            // Check if the user is a super user
+            const isSuperUser = response.data.is_super_user;
+            
+            // Log the value of isSuperUser to the console for debugging
+            console.log('Is Super User:', isSuperUser);
+
+            // Redirect based on user type
+            if (isSuperUser === true) {
+                // Redirect to admin.html for super users
+                window.location.href = 'admin.html';
+            } else {
+                // Redirect to user.html for regular users
+                window.location.href = 'user.html';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    </script>
+
 </body>
 
 </html>

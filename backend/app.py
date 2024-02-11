@@ -1,13 +1,19 @@
-import datetime
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+import jwt
+import datetime
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+import json
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a strong, unique secret key
+app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Replace with a strong, unique JWT secret key
 db = SQLAlchemy(app)
+jwt = JWTManager(app)  # Initialize JWTManager
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,16 +27,96 @@ class Customer(db.Model):
     name = db.Column(db.String(100), nullable=False)
     city = db.Column(db.String(100), nullable=False)
     age = db.Column(db.Integer, nullable=False)
+    is_super_user = db.Column(db.Boolean, default=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(50), nullable=False)
 
 class Loan(db.Model):
     cust_id = db.Column(db.Integer, db.ForeignKey('customer.id'), primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'), primary_key=True)
     loan_date = db.Column(db.Date, nullable=False)
     return_date = db.Column(db.Date)
+    
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a strong, unique secret key
+    app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Replace with a strong, unique JWT secret key
+    CORS(app)  # Enable CORS for all routes
+    db.init_app(app)
+    jwt.init_app(app)  # Initialize JWTManager
+    return app
 
 def create_tables():
     with app.app_context():
         db.create_all()
+
+SUPER_USER_PASSWORD = "PASSWORDPASSWORD" 
+
+@app.route('/register', methods=['POST'])
+def register():
+    try:
+        data = request.json
+        if data.get('super_user_password') == SUPER_USER_PASSWORD:
+            is_super_user = True
+        else:
+            is_super_user = False
+
+        new_customer = Customer(
+            name=data['name'],
+            city=data['city'],
+            age=data['age'],
+            username=data['username'],
+            password=data['password'],
+            is_super_user=is_super_user
+        )
+        db.session.add(new_customer)
+        db.session.commit()
+
+        # Generate JWT upon successful registration
+        token = jwt.encode({'username': data['username'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)}, app.config['SECRET_KEY'], algorithm='HS256')
+
+        return jsonify({'message': 'Registration successful', 'jwtToken': token.decode('UTF-8')}), 201
+    except Exception as e:
+        print(str(e))
+        return jsonify({'message': 'Internal Server Error'}), 500
+
+# Modify your login route in the backend
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.json
+        username = data.get('username')
+        password = data.get('password')
+
+        # Check if the username and password match a user in the database
+        user = Customer.query.filter_by(username=username, password=password).first()
+
+        if user:
+            # Generate access token upon successful login
+            access_token = create_access_token(identity=username)
+
+            # Add a print statement to see the value of is_super_user in the terminal
+            print('Is Super User:', user.is_super_user)
+
+            return jsonify(access_token=access_token, is_super_user=user.is_super_user), 200
+        else:
+            return jsonify({'message': 'Invalid credentials'}), 401
+    except Exception as e:
+        print(str(e))
+        return jsonify({'message': 'Internal Server Error'}), 500
+
+# Add a new route for handling authenticated requests
+@app.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    try:
+        current_user = jwt.get_jwt_identity()  # Use jwt.get_jwt_identity() instead of get_jwt_identity()
+        return jsonify(logged_in_as=current_user), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({'message': 'Internal Server Error'}), 500
 
 @app.route('/add_customer', methods=['POST'])
 def add_customer():
@@ -151,5 +237,6 @@ def remove_customer(cust_id):
     
 
 if __name__ == '__main__':
+    create_app()
     create_tables()
     app.run(debug=True, port=5000)
