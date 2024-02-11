@@ -75,6 +75,10 @@
                     <button type="button" onclick="returnBook()">Return Book</button>
                 </form>
             </div>
+            <div class="col">
+                <h2>Show All Books</h2>
+                <button type="button" onclick="showAllBooks()">Show all books</button>
+            </div>
 
         </div>
 
@@ -116,6 +120,31 @@
             const response = await axios.post(`${BASE_URL}/return_book`, Object.fromEntries(formData));
             alert(response.data.message);
         }
+        async function showAllBooks() {
+            const response = await axios.get(`${BASE_URL}/display_books`);
+            const books = response.data.books;
+
+            // Create a temporary div to extract text content
+            const tempDiv = document.createElement('div');
+
+            // Set the HTML content with book information
+            tempDiv.innerHTML = `<h3>All Books</h3><ul></ul>`;
+
+            const ulElement = tempDiv.querySelector('ul');
+
+            books.forEach(book => {
+                const liElement = document.createElement('li');
+                liElement.textContent = `${book.name} by ${book.author} (${book.year_published}) - Type ${book.book_type}`;
+                ulElement.appendChild(liElement);
+            });
+
+            // Extract text content without HTML tags
+            const textContent = tempDiv.textContent;
+
+            // Display the text content in the alert popup
+            alert(textContent);
+        }
+
     </script>
 </body>
 
