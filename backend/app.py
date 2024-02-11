@@ -75,7 +75,7 @@ def return_book():
 
     loan = Loan.query.filter_by(cust_id=cust_id, book_id=book_id).first()
     if loan:
-        loan.return_date = datetime.datetime.now()
+        db.session.delete(loan)  # Remove the loan entry from the database
         db.session.commit()
         return jsonify({'message': 'Book returned successfully'}), 201
     else:
