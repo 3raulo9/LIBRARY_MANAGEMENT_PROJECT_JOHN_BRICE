@@ -66,7 +66,7 @@
                         <label for="loginPassword">Password:</label>
                         <input type="password" class="form-control" id="loginPassword" name="password" required>
                     </div>
-            
+
                     <button type="button" class="btn btn-primary" onclick="loginUser()">Login</button>
                 </form>
             </div>
@@ -92,36 +92,36 @@
             }
         }
         async function loginUser() {
-        const formData = new FormData(document.getElementById('loginForm'));
+            const formData = new FormData(document.getElementById('loginForm'));
 
-        try {
-            const response = await axios.post('http://127.0.0.1:5000/login', Object.fromEntries(formData));
-            alert('Login successful');
+            try {
+                const response = await axios.post('http://127.0.0.1:5000/login', Object.fromEntries(formData));
+                alert('Login successful');
 
-            // Save the JWT token in local storage or session storage for future authenticated requests
-            localStorage.setItem('jwtToken', response.data.access_token);
+                // Save the JWT token in local storage or session storage for future authenticated requests
+                localStorage.setItem('jwtToken', response.data.access_token);
 
-            // Check the entire response for debugging
-            console.log('Backend Response:', response);
+                // Check the entire response for debugging
+                console.log('Backend Response:', response);
 
-            // Check if the user is a super user
-            const isSuperUser = response.data.is_super_user;
-            
-            // Log the value of isSuperUser to the console for debugging
-            console.log('Is Super User:', isSuperUser);
+                // Check if the user is a super user
+                const isSuperUser = response.data.is_super_user;
 
-            // Redirect based on user type
-            if (isSuperUser === true) {
-                // Redirect to admin.html for super users
-                window.location.href = 'admin.html';
-            } else {
-                // Redirect to user.html for regular users
-                window.location.href = 'user.html';
+                // Log the value of isSuperUser to the console for debugging
+                console.log('Is Super User:', isSuperUser);
+
+                // Redirect based on user type
+                if (isSuperUser === true) {
+                    // Redirect to admin.html for super users
+                    window.location.href = 'admin.html';
+                } else {
+                    // Redirect to user.html for regular users
+                    window.location.href = 'user.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
-        } catch (error) {
-            console.error('Error:', error);
         }
-    }
     </script>
 
 </body>

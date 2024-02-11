@@ -55,6 +55,7 @@
                     <div class="card-body">
                         <h2 class="card-title">Add Customer</h2>
                         <form id="addCustomerForm">
+                            <!-- Existing fields -->
                             <label for="customerName">Name:</label>
                             <input type="text" id="customerName" name="name" class="form-control" required>
 
@@ -64,11 +65,25 @@
                             <label for="customerAge">Age:</label>
                             <input type="number" id="customerAge" name="age" class="form-control" required>
 
+                            <label for="customerUsername">Username:</label>
+                            <input type="text" id="customerUsername" name="username" class="form-control" required>
+
+                            <label for="customerPassword">Password:</label>
+                            <input type="password" id="customerPassword" name="password" class="form-control" required>
+
+                            <div class="form-check mt-3">
+                                <input type="checkbox" class="form-check-input" id="superUserCheckbox"
+                                    name="isSuperUser">
+                                <label class="form-check-label" for="superUserCheckbox">Make Super User</label>
+                            </div>
+
                             <button type="button" onclick="addCustomer()" class="btn btn-primary mt-3">Add
                                 Customer</button>
                         </form>
                     </div>
                 </div>
+
+
             </div>
 
             <div class="col-md-4">

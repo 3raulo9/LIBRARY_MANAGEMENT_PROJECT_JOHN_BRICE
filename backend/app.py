@@ -124,7 +124,14 @@ def protected():
 @app.route('/add_customer', methods=['POST'])
 def add_customer():
     data = request.json
-    new_customer = Customer(name=data['name'], city=data['city'], age=data['age'])
+    new_customer = Customer(
+    name=data['name'],
+    city=data['city'],
+    age=data['age'],
+    username=data['username'],
+    password=data['password'],
+)
+
     db.session.add(new_customer)
     db.session.commit()
     return jsonify({'message': 'Customer added successfully'}), 201
