@@ -91,8 +91,9 @@ def display_books():
 @app.route('/display_customers', methods=['GET'])
 def display_customers():
     customers = Customer.query.all()
-    customer_list = [{'name': customer.name, 'city': customer.city, 'age': customer.age} for customer in customers]
+    customer_list = [{'id': customer.id, 'name': customer.name, 'city': customer.city, 'age': customer.age} for customer in customers]
     return jsonify({'customers': customer_list})
+
 
 @app.route('/display_loans', methods=['GET'])
 def display_loans():
@@ -122,7 +123,7 @@ def find_customer():
     customer_name = request.args.get('name')
     customer = Customer.query.filter_by(name=customer_name).first()
     if customer:
-        return jsonify({'customer': {'name': customer.name, 'city': customer.city, 'age': customer.age, }})
+        return jsonify({'customer': {'name': customer.name, 'city': customer.city, 'age': customer.age}})
     else:
         return jsonify({'message': 'Customer not found'}), 404
 
