@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <title>Library Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -16,7 +14,6 @@
 
     <h1 style="text-align: center;">A simple system for managing a book library</h1>
     <hr class="my-4">
-
 
     <div class="container">
         <div class="row">
@@ -35,8 +32,6 @@
                     <button type="button" onclick="addCustomer()">Add Customer</button>
                 </form>
             </div>
-
-            <!-- Add Book Form -->
             <div class="col">
                 <h2>Add Book</h2>
                 <form id="addBookForm" class="card" style="width: 18rem;">
@@ -72,7 +67,6 @@
 
     </div>
     <hr class="my-4">
-
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">
             <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
@@ -84,40 +78,26 @@
         </div>
     </footer>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        const BASE_URL = 'http://localhost:5000'
+
         async function addCustomer() {
             const formData = new FormData(document.getElementById('addCustomerForm'));
-            try {
-                const response = await axios.post('/add_customer', Object.fromEntries(formData));
-                alert(response.data.message);
-            } catch (error) {
-                console.error('Error adding customer:', error);
-            }
+            const response = await axios.post(`${BASE_URL}/add_customer`, Object.fromEntries(formData));
+            alert(response.data.message);
         }
-    
         async function addBook() {
             const formData = new FormData(document.getElementById('addBookForm'));
-            try {
-                const response = await axios.post('/add_book', Object.fromEntries(formData));
-                alert(response.data.message);
-            } catch (error) {
-                console.error('Error adding book:', error);
-            }
+            const response = await axios.post(`${BASE_URL}/add_book`, Object.fromEntries(formData));
+            alert(response.data.message);
         }
-    
         async function loanBook() {
             const formData = new FormData(document.getElementById('loanBookForm'));
-            try {
-                const response = await axios.post('/loan_book', Object.fromEntries(formData));
-                alert(response.data.message);
-            } catch (error) {
-                console.error('Error loaning book:', error);
-            }
+            const response = await axios.post(`${BASE_URL}/loan_book`, Object.fromEntries(formData));
+            alert(response.data.message);
         }
     </script>
-    
-
 </body>
 
 </html>
