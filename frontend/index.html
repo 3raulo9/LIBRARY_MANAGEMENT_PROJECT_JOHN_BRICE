@@ -79,6 +79,18 @@
                 <h2>Show All Books</h2>
                 <button type="button" onclick="showAllBooks()">Show all books</button>
             </div>
+            <div class="col">
+                <h2>Show All Customers</h2>
+                <button type="button" onclick="showAllCustomers()">Show all customers</button>
+            </div>
+            <div class="col">
+                <h2>Show All Loans</h2>
+                <button type="button" onclick="showAllLoans()">Show all loans</button>
+            </div>
+            <div class="col">
+                <h2>Show Late Loans</h2>
+                <button type="button" onclick="showLateLoans()">Show late loans</button>
+            </div>
 
         </div>
 
@@ -128,13 +140,89 @@
             const tempDiv = document.createElement('div');
 
             // Set the HTML content with book information
-            tempDiv.innerHTML = `<h3>All Books</h3><ul></ul>`;
+            tempDiv.innerHTML = `<h3>All Books: 
+</h3><ul></ul>`;
 
             const ulElement = tempDiv.querySelector('ul');
 
             books.forEach(book => {
                 const liElement = document.createElement('li');
                 liElement.textContent = `${book.name} by ${book.author} (${book.year_published}) - Type ${book.book_type}`;
+                ulElement.appendChild(liElement);
+            });
+
+            // Extract text content without HTML tags
+            const textContent = tempDiv.textContent;
+
+            // Display the text content in the alert popup
+            alert(textContent);
+        }
+        async function showAllCustomers() {
+            const response = await axios.get(`${BASE_URL}/display_customers`);
+            const customers = response.data.customers;
+
+            // Create a temporary div to extract text content
+            const tempDiv = document.createElement('div');
+
+            // Set the HTML content with customer information
+            tempDiv.innerHTML = `<h3>All Customers:
+</h3><ul></ul>`;
+
+            const ulElement = tempDiv.querySelector('ul');
+
+            customers.forEach(customer => {
+                const liElement = document.createElement('li');
+                liElement.textContent = `${customer.name} from ${customer.city}, Age ${customer.age}`;
+                ulElement.appendChild(liElement);
+            });
+
+            // Extract text content without HTML tags
+            const textContent = tempDiv.textContent;
+
+            // Display the text content in the alert popup
+            alert(textContent);
+        }
+        async function showAllLoans() {
+            const response = await axios.get(`${BASE_URL}/display_loans`);
+            const loans = response.data.loans;
+
+            // Create a temporary div to extract text content
+            const tempDiv = document.createElement('div');
+
+            // Set the HTML content with loan information
+            tempDiv.innerHTML = `<h3>All Loans:
+</h3><ul></ul>`;
+
+            const ulElement = tempDiv.querySelector('ul');
+
+            loans.forEach(loan => {
+                const liElement = document.createElement('li');
+                liElement.textContent = `Customer ID: ${loan.cust_id}, Book ID: ${loan.book_id}, Loan Date: ${loan.loan_date}, Return Date: ${loan.return_date}`;
+                ulElement.appendChild(liElement);
+            });
+
+            // Extract text content without HTML tags
+            const textContent = tempDiv.textContent;
+
+            // Display the text content in the alert popup
+            alert(textContent);
+        }
+        async function showLateLoans() {
+            const response = await axios.get(`${BASE_URL}/display_late_loans`);
+            const lateLoans = response.data.late_loans;
+
+            // Create a temporary div to extract text content
+            const tempDiv = document.createElement('div');
+
+            // Set the HTML content with late loan information
+            tempDiv.innerHTML = `<h3>Late Loans:
+</h3><ul></ul>`;
+
+            const ulElement = tempDiv.querySelector('ul');
+
+            lateLoans.forEach(loan => {
+                const liElement = document.createElement('li');
+                liElement.textContent = `Customer ID: ${loan.cust_id}, Book ID: ${loan.book_id}, Loan Date: ${loan.loan_date}, Return Date: ${loan.return_date}`;
                 ulElement.appendChild(liElement);
             });
 
