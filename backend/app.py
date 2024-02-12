@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import jwt
@@ -7,6 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 import json
 import os
 from dotenv import load_dotenv
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -24,6 +26,8 @@ class Book(db.Model):
     author = db.Column(db.String(100), nullable=False)
     year_published = db.Column(db.Integer, nullable=False)
     book_type = db.Column(db.Integer, nullable=False)
+    image_path = db.Column(db.String(255))
+
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -138,10 +142,27 @@ def add_customer():
 
 @app.route('/add_book', methods=['POST'])
 def add_book():
-    data = request.json
-    new_book = Book(name=data['name'], author=data['author'], year_published=data['year_published'], book_type=data['book_type'])
+    data = request.form.to_dict()
+    file = request.files.get('image')
+
+    new_book = Book(
+        name=data['name'],
+        author=data['author'],
+        year_published=data['year_published'],
+        book_type=data['book_type']
+    )
+
+    if file:
+        upload_folder = 'path/to/save/'
+        os.makedirs(upload_folder, exist_ok=True)  # Create directory if it doesn't exist
+
+        # Save the file to the specified location
+        file.save(os.path.join(upload_folder, secure_filename(file.filename)))
+        new_book.image_path = os.path.join(upload_folder, secure_filename(file.filename))
+
     db.session.add(new_book)
     db.session.commit()
+
     return jsonify({'message': 'Book added successfully'}), 201
 
 @app.route('/loan_book', methods=['POST'])

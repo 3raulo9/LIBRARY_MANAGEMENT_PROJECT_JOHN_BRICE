@@ -10,12 +10,24 @@ async function addCustomer() {
 }
 async function addBook() {
   const formData = new FormData(document.getElementById("addBookForm"));
+  const imageInput = document.getElementById("bookImage");
+  
+  if (imageInput.files.length > 0) {
+    formData.append("image", imageInput.files[0]);
+  }
+
   const response = await axios.post(
     `${BASE_URL}/add_book`,
-    Object.fromEntries(formData)
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
   );
   alert(response.data.message);
 }
+
 async function loanBook() {
   const formData = new FormData(document.getElementById("loanBookForm"));
   const response = await axios.post(
