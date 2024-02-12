@@ -148,7 +148,9 @@ Build a client application to interact with the DAL. Implement the following ope
     {
         "name": "John Doe",
         "city": "New York",
-        "age": 25
+        "age": 30,
+        "username": "john_doe",
+        "password": "secure_password"
     }
     ```
   
@@ -186,6 +188,28 @@ Build a client application to interact with the DAL. Implement the following ope
         "book_id": 1
     }
     ```
+## Register a new user (or a Super User):
+
+- **Endpoint:** POST http://localhost:5000/register
+- **Body (raw JSON):**
+   ```{
+    "name": "John Doe",
+    "city": "New York",
+    "age": 25,
+    "username": "john_doe",
+    "password": "secure_password",
+    "super_user_password": "super_secret_password"
+}```
+
+
+## Login:
+
+- **Endpoint:** POST http://localhost:5000/login
+- **Body (raw JSON):**
+   ```{
+    "username": "john_doe",
+    "password": "secure_password"
+}```
 
 ## Display all books:
 
