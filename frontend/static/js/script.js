@@ -192,9 +192,14 @@ async function findBook() {
 
     if (response.status === 200) {
       const book = response.data.book;
-      alert(
-        `Book Found!\nName: ${book.name}\nAuthor: ${book.author}\nYear Published: ${book.year_published}\nType: ${book.book_type}`
-      );
+      const bookInfo = `Book Found!\nName: ${book.name}\nAuthor: ${book.author}\nYear Published: ${book.year_published}\nType: ${book.book_type}`;
+
+      alert(bookInfo);
+
+      if (book.image_path) {
+        // Open a new tab with the book image
+        window.open(`${BASE_URL}/${book.image_path}`, '_blank');
+      }
     } else {
       alert("Book not found");
     }
@@ -209,6 +214,8 @@ async function findBook() {
     }
   }
 }
+
+
 async function removeBook() {
   const bookId = document.getElementById("removeBookId").value;
 

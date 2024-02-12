@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -226,14 +226,31 @@ def display_late_loans():
     return jsonify({'late_loans': late_loan_list})
 
 
+# Route to find a book by name
 @app.route('/find_book', methods=['GET'])
 def find_book():
     book_name = request.args.get('name')
     book = Book.query.filter_by(name=book_name).first()
+
     if book:
-        return jsonify({'book': {'name': book.name, 'author': book.author, 'year_published': book.year_published, 'book_type': book.book_type}})
+        # Include the image_path in the response if it exists
+        response_data = {
+            'book': {
+                'name': book.name,
+                'author': book.author,
+                'year_published': book.year_published,
+                'book_type': book.book_type,
+                'image_path': book.image_path  # Include image_path if available
+            }
+        }
+        return jsonify(response_data)
     else:
         return jsonify({'message': 'Book not found'}), 404
+
+# Route to serve images
+@app.route('/path/to/save/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('path/to/save/', filename)
 
 @app.route('/find_customer', methods=['GET'])
 def find_customer():
