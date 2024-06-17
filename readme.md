@@ -22,7 +22,7 @@ To start off, you have to create a virtual environment. You can do it by followi
 
 3. Create a new virtual environment in your project directory:
    ```
-   virtualenv venv
+   virtualenv env
    ```
 
 4. Activate the virtual environment:
@@ -40,7 +40,7 @@ Now, you are in your virtual environment and can start installing packages for y
 Please replace `/path/to/your/project` with the actual path to your project directory. The name `venv` is just an example, you can name your virtual environment as you wish.
 
 
-Sure, here is the instruction to install the packages listed in the `requirements.txt` file:
+here is the instruction to install the packages listed in the `requirements.txt` file:
 
 ```markdown
 ## Installing Packages
