@@ -3,7 +3,7 @@
 
 ## Project Overview
 This project involves the implementation of a simple system for managing a book library using Python.
-Sure, here is the markdown format for the instructions you provided:
+
 
 ```markdown
 ## How to use
